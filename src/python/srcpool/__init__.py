@@ -37,7 +37,7 @@ class SrcPool(object):
 def copy_source(repo_info, repo_url, repo_path, pool_path):
     pool_repo_path = os.path.join(pool_path, repo_to_path(*repo_info))
     p = os.path.dirname(pool_repo_path)
-    os.makedirs(p, exits_ok=True)
+    os.makedirs(p, exist_ok=True)
     if not os.path.exists(pool_repo_path):
         print("copytree: %s  %s" % (repo_path, pool_repo_path))
         shutil.copytree(repo_path, pool_repo_path, symlinks=True)
