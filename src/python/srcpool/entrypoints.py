@@ -4,7 +4,7 @@ __all__ = [
 
 import os
 import click
-from srcpool import SrcPool
+from srcpool import SrcPool, copy_source, move_source
 
 
 @click.group()
@@ -27,4 +27,24 @@ def list_source(ctx):
         lambda repo_info, repo_url, repo_path, pool_path: print(
             [repo_info, repo_url, repo_path]
         ),
+    )
+
+
+@srcpool.command()
+@click.pass_context
+def copy(ctx):
+    s = SrcPool(ctx.obj["pool_path"])
+    s.sync(
+        ctx.obj["source_path"],
+        copy_source,
+    )
+
+
+@srcpool.command()
+@click.pass_context
+def move(ctx):
+    s = SrcPool(ctx.obj["pool_path"])
+    s.sync(
+        ctx.obj["source_path"],
+        move_source,
     )
