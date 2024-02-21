@@ -20,11 +20,13 @@ def git_list_remote(repo_path):
 
 def git_split_url(url):
     if url.startswith("git@"):
-        domain, path = url[4:].split(":", maxsplit=1)
+        domain, path = url[4:].strip("/").split(":", maxsplit=1)
     elif url.startswith("https://"):
-        domain, path = url[8:].split("/", maxsplit=1)
+        domain, path = url[8:].strip("/").split("/", maxsplit=1)
     elif url.startswith("git://"):
-        domain, path = url[6:].split("/", maxsplit=1)
+        domain, path = url[6:].strip("/").split("/", maxsplit=1)
+    elif url.startswith("http://"):
+        domain, path = url[7:].strip("/").split("/", maxsplit=1)
     else:
         raise ValueError("Unknown type of URL: %s" % url)
 

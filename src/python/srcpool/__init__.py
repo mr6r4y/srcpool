@@ -13,8 +13,8 @@ from srcpool.utils import git_list_remote, git_split_url, repo_to_path
 
 
 class SrcPool(object):
-    def __init__(self, pool_path):
-        self.pool_path = os.path.abspath(pool_path)
+    def __init__(self, pool_path=None):
+        self.pool_path = os.path.abspath(pool_path) if pool_path else None
         self.repo_set = set()
 
     def sync(self, src_path, sync_func):
@@ -35,6 +35,8 @@ class SrcPool(object):
 
 
 def copy_source(repo_info, repo_url, repo_path, pool_path):
+    if pool_path is None:
+        raise ValueError("pool_path is None")
     pool_repo_path = os.path.join(pool_path, repo_to_path(*repo_info))
     p = os.path.dirname(pool_repo_path)
     os.makedirs(p, exist_ok=True)
@@ -44,9 +46,11 @@ def copy_source(repo_info, repo_url, repo_path, pool_path):
 
 
 def move_source(repo_info, repo_url, repo_path, pool_path):
+    if pool_path is None:
+        raise ValueError("pool_path is None")
     pool_repo_path = os.path.join(pool_path, repo_to_path(*repo_info))
     p = os.path.dirname(pool_repo_path)
-    os.makedirs(p, exits_ok=True)
+    os.makedirs(p, exist_ok=True)
     if not os.path.exists(pool_repo_path):
         print("move: %s  %s" % (repo_path, pool_repo_path))
         shutil.move(repo_path, pool_repo_path)
