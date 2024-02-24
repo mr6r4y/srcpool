@@ -36,6 +36,32 @@ class SrcPool(object):
                         self.repo_set.add(repo_info)
                         del directories[:]
 
+    def git_clone(self, repo_file):
+        for line in open(repo_file, "r"):
+            repo_url = line.strip()
+            if repo_url:
+                try:
+                    repo_info = git_split_url(line.strip())
+                except ValueError as e:
+                    raise e
+                if repo_info not in self.repo_set:
+                    clone_url(self.pool_path, repo_info, repo_url)
+                    self.repo_set.add(repo_info)
+
+
+def clone_url(pool_path, repo_info, repo_url):
+    if pool_path is None:
+        raise ValueError("pool_path is None")
+    pool_repo_path = os.path.join(pool_path, repo_to_path(*repo_info))
+    p = os.path.dirname(pool_repo_path)
+    os.makedirs(p, exist_ok=True)
+    if not os.path.exists(pool_repo_path):
+        print("clone: %s in %s" % (str(repo_info), p))
+        print("========")
+        args = ["git", "clone", repo_url]
+        sp.Popen(args, cwd=p).wait()
+        print("========\n")
+
 
 def copy_source(repo_info, repo_url, repo_path, pool_path):
     if pool_path is None:

@@ -116,3 +116,14 @@ def move(ctx, pool_path, source_path):
         ctx.obj["source_path"],
         move_source,
     )
+
+
+@srcpool.command()
+@click.pass_context
+@click.argument("pool-path")
+@click.argument("repo-file")
+def clone(ctx, pool_path, repo_file):
+    ctx.obj["pool_path"] = os.path.abspath(pool_path)
+    ctx.obj["repo_file"] = os.path.abspath(repo_file)
+    s = SrcPool(ctx.obj["pool_path"])
+    s.git_clone(ctx.obj["repo_file"])
