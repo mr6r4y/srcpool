@@ -2,12 +2,15 @@ __all__ = [
     "SrcPool",
     "copy_source",
     "move_source",
-    "clone_source",
+    "pull_source",
+    "symlink_zig_projects",
+    "symlink_rust_projects",
 ]
 
 
 import os
 import shutil
+import subprocess as sp
 
 from srcpool.utils import git_list_remote, git_split_url, repo_to_path
 
@@ -56,5 +59,33 @@ def move_source(repo_info, repo_url, repo_path, pool_path):
         shutil.move(repo_path, pool_repo_path)
 
 
-def clone_source(repo_info, repo_url, repo_path, pool_path):
-    pass
+def pull_source(repo_info, repo_url, repo_path, pool_path):
+    print("In %s\n=======" % repo_path)
+    args = ["git", "pull"]
+    sp.Popen(args, cwd=repo_path).wait()
+    print("========\n")
+
+
+def symlink_zig_projects(repo_info, repo_url, repo_path, pool_path):
+    if os.path.exists(os.path.join(repo_path, "build.zig")):
+        print("In %s\n=======" % repo_path)
+        name = os.path.basename(repo_path)
+        link_path = os.path.join(pool_path, name)
+        if os.path.exists(link_path):
+            print("Skip - link already exists")
+        else:
+            os.symlink(repo_path, link_path)
+        print("========\n")
+
+
+def symlink_rust_projects(repo_info, repo_url, repo_path, pool_path):
+    if os.path.exists(os.path.join(repo_path, "Cargo.toml")):
+        print("In %s\n=======" % repo_path)
+        name = os.path.basename(repo_path)
+        link_path = os.path.join(pool_path, name)
+        if os.path.exists(link_path):
+            print("Skip - link already exists")
+        else:
+            os.symlink(repo_path, link_path)
+
+        print("========\n")
