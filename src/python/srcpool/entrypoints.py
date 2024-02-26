@@ -25,15 +25,18 @@ def srcpool(
 @srcpool.command()
 @click.pass_context
 @click.argument("source-path")
-def list_source(ctx, source_path):
+@click.option("--only-url", is_flag=True, default=False)
+def list_source(ctx, source_path, only_url):
     ctx.obj["source_path"] = os.path.abspath(source_path)
     s = SrcPool()
-    s.sync(
-        ctx.obj["source_path"],
-        lambda repo_info, repo_url, repo_path, pool_path: print(
+    if only_url:
+        fn = lambda repo_info, repo_url, repo_path, pool_path: print(repo_url)
+    else:
+        fn = lambda repo_info, repo_url, repo_path, pool_path: print(
             [repo_info, repo_url, repo_path]
-        ),
-    )
+        )
+
+    s.sync(ctx.obj["source_path"], fn)
 
 
 @srcpool.command()
