@@ -22,7 +22,7 @@ class SrcPool(object):
 
     def sync(self, src_path, sync_func):
         path = os.path.abspath(src_path)
-        for root, directories, files in os.walk(path):
+        for root, directories, files in os.walk(path, followlinks=True):
             if ".git" in directories:
                 repo_url = git_list_remote(root)
                 if repo_url:
