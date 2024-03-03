@@ -31,7 +31,9 @@ def git_split_url(url):
         raise ValueError("Unknown type of URL: %s" % url)
 
     owner = os.path.dirname(path)
-    repo_name = os.path.splitext(os.path.basename(path))[0]
+    repo_name, ext = os.path.splitext(os.path.basename(path))
+    if ext != ".git":
+        repo_name += ext
 
     return (domain, owner if owner else None, repo_name)
 
