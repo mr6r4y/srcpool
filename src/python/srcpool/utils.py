@@ -19,7 +19,7 @@ def git_list_remote(repo_path):
 
 
 def git_split_url(url):
-    if url.startswith("git@"):
+    if url.startswith("git@") or url.startswith("gitlab@"):
         domain, path = url[4:].strip("/").split(":", maxsplit=1)
     elif url.startswith("https://"):
         domain, path = url[8:].strip("/").split("/", maxsplit=1)
