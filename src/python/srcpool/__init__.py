@@ -49,6 +49,30 @@ class SrcPool(object):
                     self.repo_set.add(repo_info)
 
 
+def archive(backup_dir):
+    def _(repo_info, repo_url, repo_path, pool_path):
+        tar_gz_file = (
+            "_".join(
+                [(i.replace("/", "_") if i is not None else "") for i in repo_info]
+            )
+            + ".tar.gz"
+        )
+        tar_gz_path = os.path.join(backup_dir, tar_gz_file)
+        params = [
+            "tar",
+            "-czf",
+            tar_gz_path,
+            "-C",
+            pool_path,
+            repo_path[len(pool_path) + 1 :],
+        ]
+        print(" ".join(params))
+        sp.Popen(params).wait()
+        print()
+
+    return _
+
+
 def clone_url(pool_path, repo_info, repo_url):
     if pool_path is None:
         raise ValueError("pool_path is None")

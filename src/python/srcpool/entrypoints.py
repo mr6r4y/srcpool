@@ -11,6 +11,7 @@ from srcpool import (
     pull_source,
     symlink_zig_projects,
     symlink_rust_projects,
+    archive,
 )
 
 
@@ -130,3 +131,17 @@ def clone(ctx, pool_path, repo_file):
     ctx.obj["repo_file"] = os.path.abspath(repo_file)
     s = SrcPool(ctx.obj["pool_path"])
     s.git_clone(ctx.obj["repo_file"])
+
+
+@srcpool.command()
+@click.pass_context
+@click.argument("pool-path")
+@click.argument("backup-dir")
+def backup(ctx, pool_path, backup_dir):
+    ctx.obj["pool_path"] = os.path.abspath(pool_path)
+    ctx.obj["backup_dir"] = os.path.abspath(backup_dir)
+    s = SrcPool(ctx.obj["pool_path"])
+    s.sync(
+        ctx.obj["pool_path"],
+        archive(ctx.obj["backup_dir"]),
+    )
