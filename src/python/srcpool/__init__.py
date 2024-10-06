@@ -66,9 +66,12 @@ def archive(backup_dir):
             pool_path,
             repo_path[len(pool_path) + 1 :],
         ]
-        print(" ".join(params))
-        sp.Popen(params).wait()
-        print()
+        # TO-DO: Make param to control update/skip behaviour
+        if os.path.exists(tar_gz_path):
+            print("Skip %s" % tar_gz_path)
+        else:
+            print(" ".join(params))
+            sp.Popen(params).wait()
 
     return _
 
