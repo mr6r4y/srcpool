@@ -68,7 +68,15 @@ def archive(backup_dir):
         ]
         # TO-DO: Make param to control update/skip behaviour
         if os.path.exists(tar_gz_path):
-            print("Skip %s" % tar_gz_path)
+            t1 = os.path.getmtime(repo_path)
+            t2 = os.path.getctime(tar_gz_path)
+            if t1 > t2:
+                print("Update %s" % tar_gz_path)
+                print(" ".join(params))
+                sp.Popen(params).wait()
+            else:
+                print("Skip %s" % tar_gz_path)
+
         else:
             print(" ".join(params))
             sp.Popen(params).wait()
