@@ -13,9 +13,9 @@ class Gitea(object):
         self.session = requests.session()
 
     def repositories(self):
-        u = urljoin(self.url, "api/v1/repos/search?page=%i")
         page = 1
         while True:
+            u = urljoin(self.url, "api/v1/repos/search?page=%i" % page)
             r = self.session.get(u)
             dt = r.json().get("data", [])
             for item in dt:
