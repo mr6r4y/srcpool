@@ -13,6 +13,7 @@ from srcpool import (
     symlink_rust_projects,
     archive,
 )
+from srcpool.gitea import Gitea
 
 
 @click.group()
@@ -145,3 +146,12 @@ def backup(ctx, pool_path, backup_dir):
         ctx.obj["pool_path"],
         archive(ctx.obj["backup_dir"]),
     )
+
+
+@srcpool.command()
+@click.pass_context
+@click.argument("url")
+def gitea(ctx, url):
+    g = Gitea(url)
+    for r in g.repositories():
+        print(r)
