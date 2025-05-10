@@ -84,12 +84,24 @@ def archive(backup_dir):
     return _
 
 
+def path_in_git_repo(path):
+    while len(path) > 1:
+        if os.path.exists(path):
+            if ".git" in os.listdir(path):
+                return True
+        path = os.path.dirname(path)
+    return False
+
+
 def clone_url(pool_path, repo_info, repo_url):
     if pool_path is None:
         raise ValueError("pool_path is None")
     pool_repo_path = os.path.join(pool_path, repo_to_path(*repo_info))
     p = os.path.dirname(pool_repo_path)
     os.makedirs(p, exist_ok=True)
+    if path_in_git_repo(pool_repo_path):
+        print("Invalid: Path in another git repo: %s" % pool_repo_path)
+        return
     if not os.path.exists(pool_repo_path):
         print("clone: %s in %s" % (str(repo_info), p))
         print("========")
