@@ -14,6 +14,7 @@ from srcpool import (
     archive,
 )
 from srcpool.gitea import Gitea
+from srcpool.launchpad import Launchpad
 
 
 @click.group()
@@ -153,5 +154,13 @@ def backup(ctx, pool_path, backup_dir):
 @click.argument("url")
 def gitea(ctx, url):
     g = Gitea(url)
+    for r in g.repositories():
+        print(r)
+
+
+@srcpool.command()
+@click.pass_context
+def launchpad(ctx):
+    g = Launchpad()
     for r in g.repositories():
         print(r)
