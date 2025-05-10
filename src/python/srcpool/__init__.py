@@ -85,6 +85,7 @@ def archive(backup_dir):
 
 
 def path_in_git_repo(path):
+    path = os.path.dirname(path)
     while len(path) > 1:
         if os.path.exists(path):
             if ".git" in os.listdir(path):
@@ -108,6 +109,8 @@ def clone_url(pool_path, repo_info, repo_url):
         args = ["git", "clone", repo_url]
         sp.Popen(args, cwd=p).wait()
         print("========\n")
+    else:
+        print("Skip: Path exists: %s" % pool_repo_path)
 
 
 def copy_source(repo_info, repo_url, repo_path, pool_path):
