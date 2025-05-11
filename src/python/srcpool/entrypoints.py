@@ -128,11 +128,17 @@ def move(ctx, pool_path, source_path):
 @click.pass_context
 @click.argument("pool-path")
 @click.argument("repo-file")
-def clone(ctx, pool_path, repo_file):
+@click.option(
+    "-s",
+    "--skip-first",
+    type=click.INT,
+    help="Skip the first N lines of the repository file",
+)
+def clone(ctx, pool_path, repo_file, skip_first):
     ctx.obj["pool_path"] = os.path.abspath(pool_path)
     ctx.obj["repo_file"] = os.path.abspath(repo_file)
     s = SrcPool(ctx.obj["pool_path"])
-    s.git_clone(ctx.obj["repo_file"])
+    s.git_clone(ctx.obj["repo_file"], skip_first=skip_first)
 
 
 @srcpool.command()
