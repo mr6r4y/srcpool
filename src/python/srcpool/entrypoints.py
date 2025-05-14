@@ -14,6 +14,7 @@ from srcpool import (
     archive,
 )
 from srcpool.gitea import Gitea
+from srcpool.github import Github
 from srcpool.launchpad import Launchpad
 
 
@@ -153,6 +154,16 @@ def backup(ctx, pool_path, backup_dir):
         ctx.obj["pool_path"],
         archive(ctx.obj["backup_dir"]),
     )
+
+
+@srcpool.command()
+@click.pass_context
+@click.argument("account")
+@click.option("-f", "--forks", is_flag=True, default=False)
+def github(ctx, account, forks):
+    g = Github()
+    for r in g.repositories(account, forks):
+        print(r)
 
 
 @srcpool.command()
