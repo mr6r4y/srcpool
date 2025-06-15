@@ -171,3 +171,16 @@ def symlink_rust_projects(repo_info, repo_url, repo_path, pool_path):
             os.symlink(repo_path, link_path)
 
         print("========\n")
+
+
+def symlink_c3_projects(repo_info, repo_url, repo_path, pool_path):
+    if os.path.exists(os.path.join(repo_path, "project.json")):
+        print("In %s\n=======" % repo_path)
+        name = os.path.basename(repo_path)
+        link_path = os.path.join(pool_path, name)
+        if os.path.exists(link_path):
+            print("Skip - link already exists")
+        else:
+            os.symlink(repo_path, link_path)
+
+        print("========\n")
