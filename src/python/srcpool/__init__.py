@@ -44,6 +44,8 @@ class SrcPool(object):
                     % (n, skip_first, line.strip())
                 )
                 continue
+            if line.strip().startswith("#"):
+                continue
             repo_url = line.strip()
             if repo_url:
                 try:
