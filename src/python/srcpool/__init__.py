@@ -38,6 +38,8 @@ class SrcPool(object):
 
     def git_clone(self, repo_file, skip_first=None):
         for n, line in enumerate(open(repo_file, "r"), start=1):
+            if line.strip().startswith("#"):
+                continue
             if skip_first and skip_first > 0 and skip_first >= n:
                 print(
                     "Skip: n: %i, skip-first: %i, line: %s"
