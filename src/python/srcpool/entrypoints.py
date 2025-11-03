@@ -11,6 +11,7 @@ from srcpool import (
     pull_source,
     symlink_zig_projects,
     symlink_rust_projects,
+    symlink_c3_projects,
     archive,
 )
 from srcpool.gitea import Gitea
@@ -87,13 +88,13 @@ def symlink_rust(ctx, source_path, tag_path):
 @click.pass_context
 @click.argument("source-path")
 @click.argument("tag-path")
-def symlink_zig(ctx, source_path, tag_path):
+def symlink_c3(ctx, source_path, tag_path):
     ctx.obj["source_path"] = os.path.abspath(source_path)
     ctx.obj["tag_path"] = os.path.abspath(tag_path)
     s = SrcPool(ctx.obj["tag_path"])
     s.sync(
         ctx.obj["source_path"],
-        symlink_zig_projects,
+        symlink_c3_projects,
     )
 
 
