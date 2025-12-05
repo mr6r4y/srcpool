@@ -12,8 +12,7 @@ class Gitea(object):
         self.url = url
         self.session = requests.session()
 
-    def repositories(self):
-        page = 1
+    def repositories(self, page=1):
         while True:
             u = urljoin(self.url, "api/v1/repos/search?page=%i" % page)
             r = self.session.get(u)
