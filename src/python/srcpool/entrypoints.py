@@ -170,10 +170,11 @@ def github(ctx, account, forks):
 @srcpool.command()
 @click.pass_context
 @click.argument("url")
+@click.option("-u", "--username", default=None)
 @click.option("-p", "--page", type=click.INT, default=1)
-def gitea(ctx, url, page):
+def gitea(ctx, url, username, page):
     g = Gitea(url)
-    for r in g.repositories(page):
+    for r in g.repositories(username=username, page=page):
         print(r)
 
 

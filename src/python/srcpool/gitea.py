@@ -13,14 +13,24 @@ class Gitea(object):
         self.url = url
         self.session = requests.session()
 
-    def repositories(self, page=1):
+    def repositories(self, username=None, page=1):
         while True:
-            u = urljoin(self.url, "api/v1/repos/search?page=%i" % page)
+            if username:
+                u = urljoin(
+                    self.url, "api/v1/users/%s/repos?page=%i" % (username, page)
+                )
+            else:
+                u = urljoin(self.url, "api/v1/repos/search?page=%i" % page)
             r = self.session.get(u)
-            if not r.json().get("ok", True):
+
+            if username is None and not r.json().get("ok", True):
                 page += 1
                 continue
-            dt = r.json().get("data", [])
+
+            if username:
+                dt = r.json()
+            else:
+                dt = r.json().get("data", [])
             print("Page=%i" % page, file=sys.stderr)
             for item in dt:
                 yield item.get("clone_url")
