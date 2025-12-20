@@ -15,6 +15,7 @@ from srcpool import (
     archive,
 )
 from srcpool.gitea import Gitea
+from srcpool.gitlab import Gitlab
 from srcpool.github import Github
 from srcpool.launchpad import Launchpad
 
@@ -174,6 +175,17 @@ def github(ctx, account, forks):
 @click.option("-p", "--page", type=click.INT, default=1)
 def gitea(ctx, url, username, page):
     g = Gitea(url)
+    for r in g.repositories(username=username, page=page):
+        print(r)
+
+
+@srcpool.command()
+@click.pass_context
+@click.argument("url")
+@click.option("-u", "--username", default=None)
+@click.option("-p", "--page", type=click.INT, default=1)
+def gitlab(ctx, url, username, page):
+    g = Gitlab(url)
     for r in g.repositories(username=username, page=page):
         print(r)
 
