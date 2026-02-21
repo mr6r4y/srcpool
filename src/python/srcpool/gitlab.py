@@ -13,11 +13,15 @@ class Gitlab(object):
         self.url = url
         self.session = requests.session()
 
-    def repositories(self, username=None, page=1):
+    def repositories(self, username=None, group=None, page=1):
         while True:
             if username:
                 u = urljoin(
                     self.url, "api/v4/users/%s/projects?page=%i" % (username, page)
+                )
+            elif group:
+                u = urljoin(
+                    self.url, "api/v4/groups/%s/projects?page=%i" % (group, page)
                 )
             else:
                 u = urljoin(self.url, "api/v4/projects?page=%i" % page)

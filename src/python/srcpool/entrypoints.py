@@ -183,10 +183,11 @@ def gitea(ctx, url, username, page):
 @click.pass_context
 @click.argument("url")
 @click.option("-u", "--username", default=None)
+@click.option("-g", "--group", default=None)
 @click.option("-p", "--page", type=click.INT, default=1)
-def gitlab(ctx, url, username, page):
+def gitlab(ctx, url, username, group, page):
     g = Gitlab(url)
-    for r in g.repositories(username=username, page=page):
+    for r in g.repositories(username=username, group=group, page=page):
         print(r)
 
 
