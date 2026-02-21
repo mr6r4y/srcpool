@@ -21,7 +21,9 @@ class Gitlab(object):
                 )
             elif group:
                 u = urljoin(
-                    self.url, "api/v4/groups/%s/projects?page=%i" % (group, page)
+                    self.url,
+                    "api/v4/groups/%s/projects?page=%i&include_subgroups=true"
+                    % (group, page),
                 )
             else:
                 u = urljoin(self.url, "api/v4/projects?page=%i" % page)
