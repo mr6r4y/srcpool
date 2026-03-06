@@ -162,9 +162,10 @@ def backup(ctx, pool_path, backup_dir):
 @click.pass_context
 @click.argument("account")
 @click.option("-f", "--forks", is_flag=True, default=False)
-def github(ctx, account, forks):
+@click.option("-p", "--page", type=click.INT, default=1)
+def github(ctx, account, forks, page):
     g = Github()
-    for r in g.repositories(account, forks):
+    for r in g.repositories(account, forks, page=page):
         print(r)
 
 
